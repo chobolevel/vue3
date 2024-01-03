@@ -5,6 +5,7 @@
   <div v-for="(product, index) in products" :key="index">
     <h4>{{ product.name }}</h4>
     <p>{{ product.price }} 만원</p>
+    <button @click="increaseReportCnt(product.id)">허위매물신고</button> <span>신고 수: {{ product.reportCnt }}</span>
   </div>
 </template>
 
@@ -15,10 +16,16 @@ export default {
     return {
       links: [ 'Home', 'Shop', 'About' ],
       products: [
-        { name: '역삼동 원룸', price: 50 },
-        { name: '천호동 원룸', price: 60 },
-        { name: '마로구 원룸', price: 70 },
+        { id: 1, name: '역삼동 원룸', price: 50, reportCnt: 0 },
+        { id: 2, name: '천호동 원룸', price: 60, reportCnt: 0 },
+        { id: 3, name: '마로구 원룸', price: 70, reportCnt: 0 },
       ]
+    }
+  },
+  methods: {
+    increaseReportCnt(id) {
+      const idx = this.products.findIndex((p) => p.id === id)
+      this.products[idx].reportCnt++
     }
   }
 }

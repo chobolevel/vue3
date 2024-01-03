@@ -1,46 +1,45 @@
 <template>
   <div class="black-bg" v-if="isPopupOpen">
     <div class="white-bg">
-      <h4>상세페이지</h4>
-      <p>상세페이지 내용</p>
+      <h4>{{ popupTitle }}</h4>
+      <p>{{ popupContent }}</p>
       <button @click="closePopup">닫기</button>
     </div>
   </div>
   <div class="menu">
     <a v-for="link in links" :key="link">{{ link }}</a>
   </div>
-  <div v-for="(product, index) in products" :key="index">
-    <img class="room-img" :src="require(`./assets/room${index}.jpg`)" alt="방 사진">
-    <h4 @click="openPopup">{{ product.name }}</h4>
-    <p>{{ product.price }} 만원</p>
-    <button @click="increaseReportCnt(product.id)">허위매물신고</button> <span>신고 수: {{ product.reportCnt }}</span>
+  <div v-for="(room, index) in roomList" :key="index">
+    <img class="room-img" :src="room.image" alt="방 사진">
+    <h4 @click="openPopup(room)">{{ room.title }}</h4>
+    <p>{{ room.price.toLocaleString() }}원</p>
   </div>
 </template>
 
 <script>
+import { roomList } from './assets/data'
+
 export default {
   name: 'App',
   data() {
     return {
       isPopupOpen: false,
+      popupTitie: '',
+      popupContent: '',
       links: [ 'Home', 'Shop', 'About' ],
-      products: [
-        { id: 1, name: '역삼동 원룸', price: 50, reportCnt: 0 },
-        { id: 2, name: '천호동 원룸', price: 60, reportCnt: 0 },
-        { id: 3, name: '마로구 원룸', price: 70, reportCnt: 0 },
-      ]
+      roomList: roomList
     }
   },
   methods: {
-    openPopup() {
+    openPopup(room) {
+      this.popupTitle = room.title
+      this.popupContent = room.content
       this.isPopupOpen = true
     },
     closePopup() {
+      this.poupTitle = ''
+      this.popupContent = ''
       this.isPopupOpen = false
-    },
-    increaseReportCnt(id) {
-      const idx = this.products.findIndex((p) => p.id === id)
-      this.products[idx].reportCnt++
     }
   }
 }
